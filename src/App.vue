@@ -24,10 +24,19 @@
     <div class="main-content">
       <!-- 左列：3个粉色框 -->
       <div class="left-column">
-        <div class="frame pink-frame" v-for="i in 3" :key="i">
+        <div class="frame pink-frame">
           <div class="frame-content">
-            <p>粉色框 {{ i }}</p>
-            <!-- 可以在这里添加具体内容 -->
+            <PinkHeatmap />
+          </div>
+        </div>
+        <div class="frame pink-frame">
+          <div class="frame-content">
+            <PinkBubbles />
+          </div>
+        </div>
+        <div class="frame pink-frame">
+          <div class="frame-content">
+            <PinkStateTrends />
           </div>
         </div>
       </div>
@@ -77,8 +86,16 @@
 
 <script>
 import axios from 'axios'
+import PinkHeatmap from './components/PinkHeatmap.vue'
+import PinkBubbles from './components/PinkBubbles.vue'
+import PinkStateTrends from './components/PinkStateTrends.vue'
 
 export default {
+  components: {
+    PinkHeatmap,
+    PinkBubbles,
+    PinkStateTrends
+  },
   name: 'App',
   data() {
     return {
@@ -169,7 +186,7 @@ export default {
 #app {
   width: 100vw;
   height: 100vh;
-  padding: 20px; /* 移除了黑色边框 */
+  padding: 20px;
   font-family: 'Comic Sans MS', cursive, sans-serif;
   background: white;
 }
@@ -195,7 +212,6 @@ export default {
 }
 
 .select-box {
-  /* 移除了黑色边框 */
   padding: 5px 10px;
   font-size: 16px;
   min-width: 200px;
@@ -237,8 +253,11 @@ export default {
 }
 
 .pink-frame {
-  border-color: #ff69b4;
+  border: none;
+  background: transparent;
+  padding: 0;
   flex: 2;
+  overflow: visible; 
 }
 
 .green-frame {
@@ -268,6 +287,7 @@ export default {
 .frame-content {
   width: 100%;
   height: 100%;
+  overflow: visible; 
 }
 
 .frame-content h3 {
