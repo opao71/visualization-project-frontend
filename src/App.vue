@@ -56,18 +56,22 @@
       <div class="right-column">
         <div class="frame blue-frame medium">
           <div class="frame-content">
-            <h3>蓝色框 1</h3>
-            <div v-if="blueBox1Data">
-              <pre>{{ JSON.stringify(blueBox1Data, null, 2) }}</pre>
-            </div>
+            <h3>蓝色框 1 - 个性化学习行为模式</h3>
+            <BlueBox1 
+              :className="selectedClass"
+              :studentId="selectedStudent"
+              @month-change="handleBlueBox1MonthChange"
+            />
           </div>
         </div>
         <div class="frame blue-frame small">
           <div class="frame-content">
-            <h3>蓝色框 2</h3>
-            <div v-if="blueBox2Data">
-              <pre>{{ JSON.stringify(blueBox2Data, null, 2) }}</pre>
-            </div>
+            <h3>蓝色框 2 - 时间维度分析</h3>
+            <BlueBox2 
+              :className="selectedClass"
+              :studentId="selectedStudent"
+              :selectedMonth="blueBox2SelectedMonth"
+            />
           </div>
         </div>
       </div>
@@ -77,9 +81,15 @@
 
 <script>
 import axios from 'axios'
+import BlueBox1 from './components/BlueBox1.vue'
+import BlueBox2 from './components/BlueBox2.vue'
 
 export default {
   name: 'App',
+  components: {
+    BlueBox1,
+    BlueBox2
+  },
   data() {
     return {
       classes: [],
@@ -90,6 +100,7 @@ export default {
       greenBox2Data: null,
       blueBox1Data: null,
       blueBox2Data: null,
+      blueBox2SelectedMonth: '',
       apiBaseUrl: 'http://localhost:5000/api'
     }
   },
@@ -106,6 +117,9 @@ export default {
     this.loadStudents()
   },
   methods: {
+    handleBlueBox1MonthChange(month) {
+      this.blueBox2SelectedMonth = month
+    },
     async loadClasses() {
       try {
         const response = await axios.get(`${this.apiBaseUrl}/classes`)
