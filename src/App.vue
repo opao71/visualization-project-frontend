@@ -93,15 +93,15 @@ import axios from 'axios'
 import PinkHeatmap from './components/PinkHeatmap.vue'
 import PinkBubbles from './components/PinkBubbles.vue'
 import PinkStateTrends from './components/PinkStateTrends.vue'
+import BlueBox1 from './components/BlueBox1.vue'
+import BlueBox2 from './components/BlueBox2.vue'
 
 export default {
+  name: 'App',
   components: {
     PinkHeatmap,
     PinkBubbles,
-    PinkStateTrends
-  },
-  name: 'App',
-  components: {
+    PinkStateTrends,
     BlueBox1,
     BlueBox2
   },
@@ -254,7 +254,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  flex: 0 0 450px;
+  flex: 0 0 600px;
 }
 
 .frame {
@@ -285,7 +285,10 @@ export default {
 }
 
 .blue-frame {
-  border-color: #4169e1;
+  border: none;
+  background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+  padding: 0;
+  overflow: visible;
 }
 
 .blue-frame.medium {
@@ -303,8 +306,13 @@ export default {
 }
 
 .frame-content h3 {
-  margin-bottom: 10px;
-  font-size: 16px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(65, 105, 225, 0.2);
 }
 
 .frame-content pre {
