@@ -1156,10 +1156,47 @@ export default {
         return
       }
 
-      const pieData = data.map(item => ({
-        value: item.count,
-        name: item.method || item.method_name || '未知方法'
-      }))
+      // 提取方法名称的后5个字母
+      const extractMethodShortName = (methodName) => {
+        if (!methodName) return '未知'
+        // 如果是 Method_xxx 格式，提取下划线后的前5个字符
+        if (methodName.includes('_')) {
+          const parts = methodName.split('_')
+          if (parts.length > 1) {
+            const suffix = parts[1]
+            return suffix.substring(0, 5)
+          }
+        }
+        // 如果不是标准格式，返回最后5个字符
+        return methodName.length > 5 ? methodName.substring(methodName.length - 5) : methodName
+      }
+
+      // 美观的颜色方案
+      const colorPalette = [
+        '#5470c6', // 蓝色
+        '#91cc75', // 绿色
+        '#fac858', // 黄色
+        '#ee6666', // 红色
+        '#73c0de', // 浅蓝色
+        '#3ba272', // 深绿色
+        '#fc8452', // 橙色
+        '#9a60b4', // 紫色
+        '#ea7ccc', // 粉色
+        '#ff9f7f'  // 浅橙色
+      ]
+
+      const pieData = data.map((item, index) => {
+        const methodName = item.method || item.method_name || '未知方法'
+        const shortName = extractMethodShortName(methodName)
+        return {
+          value: item.count,
+          name: shortName,
+          fullName: methodName, // 保留完整名称用于tooltip
+          itemStyle: {
+            color: colorPalette[index % colorPalette.length]
+          }
+        }
+      })
 
       const option = {
         tooltip: {
@@ -1173,24 +1210,49 @@ export default {
           textStyle: {
             color: '#333'
           },
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
+          formatter: function(params) {
+            if (!params) return ''
+            const fullName = params.data.fullName || params.name
+            return `<div style="padding: 5px;">
+              <strong>${fullName}</strong><br/>
+              使用次数: ${params.value || 0}<br/>
+              占比: ${params.percent || 0}%
+            </div>`
+          }
         },
         legend: {
           orient: 'vertical',
           left: 'left',
-          top: 'middle'
+          top: 'middle',
+          textStyle: {
+            fontSize: 12
+          }
         },
         series: [{
           name: '编程方法',
           type: 'pie',
-          radius: ['40%', '70%'],
+          radius: '65%', // 改为饼图（单个值）
           center: ['60%', '50%'],
           data: pieData,
+          label: {
+            show: true,
+            formatter: '{b}\n{d}%',
+            fontSize: 11
+          },
+          labelLine: {
+            show: true,
+            length: 15,
+            length2: 10
+          },
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
               shadowOffsetX: 0,
               shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+            label: {
+              fontSize: 13,
+              fontWeight: 'bold'
             }
           }
         }]

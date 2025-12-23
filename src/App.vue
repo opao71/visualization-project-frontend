@@ -254,7 +254,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  flex: 0 0 600px;
+  flex: 0 0 480px;
 }
 
 .frame {
