@@ -185,9 +185,30 @@ export default {
       }
 
       // 检查容器尺寸
-      const containerWidth = ref.offsetWidth || ref.clientWidth
-      const containerHeight = ref.offsetHeight || ref.clientHeight
+      let containerWidth = ref.offsetWidth || ref.clientWidth
+      let containerHeight = ref.offsetHeight || ref.clientHeight
       console.log(`GreenBox2: ${chartKey} 容器尺寸:`, { width: containerWidth, height: containerHeight })
+      
+      // 如果容器尺寸太小，强制设置最小尺寸并重新获取
+      if (containerWidth < 200 || containerHeight < 150) {
+        ref.style.width = '100%'
+        ref.style.height = '100%'
+        ref.style.minWidth = '200px'
+        ref.style.minHeight = '150px'
+        console.log(`GreenBox2: ${chartKey} 容器尺寸太小，强制设置最小尺寸`)
+        // 等待样式应用后重新获取尺寸
+        setTimeout(() => {
+          containerWidth = ref.offsetWidth || ref.clientWidth || 200
+          containerHeight = ref.offsetHeight || ref.clientHeight || 150
+          if (containerWidth === 0 || containerHeight === 0) {
+            console.log(`GreenBox2: ${chartKey} 容器尺寸仍为0，延迟重试`)
+            setTimeout(() => this.renderChart(chartKey, refName, plotData), 200)
+            return
+          }
+          this._renderChartWithSize(chartKey, refName, plotData, ref)
+        }, 50)
+        return
+      }
       
       if (containerWidth === 0 || containerHeight === 0) {
         console.log(`GreenBox2: ${chartKey} 容器尺寸为0，延迟重试`)
@@ -195,14 +216,9 @@ export default {
         return
       }
       
-      // 如果容器尺寸为0，强制设置最小尺寸
-      if (ref.offsetWidth === 0 || ref.offsetHeight === 0) {
-        ref.style.width = '100%'
-        ref.style.height = '100%'
-        ref.style.minWidth = '200px'
-        ref.style.minHeight = '200px'
-        console.log(`GreenBox2: ${chartKey} 强制设置容器尺寸`)
-      }
+      this._renderChartWithSize(chartKey, refName, plotData, ref)
+    },
+    _renderChartWithSize(chartKey, refName, plotData, ref) {
 
       // 销毁旧实例
       if (this.chartInstances[chartKey]) {
@@ -229,13 +245,26 @@ export default {
       
       // 准备散点数据
       const scatterData = data.map(item => {
-        const x = item.x_value || 0
-        const y = item.y_value || 0
+        let x = item.x_value || 0
+        let y = item.y_value || 0
         const studentId = item.student_ID || 'unknown'
+        
+        // 对于编程习惯，确保x值有效（不为0或NaN）
+        if (chartKey === 'coding_habits') {
+          if (x === 0 || isNaN(x) || x === null || x === undefined) {
+            x = 0.5  // 默认值
+          }
+        }
+        
         return [x, y, studentId]
       })
       
       console.log(`GreenBox2: ${chartKey} 散点数据示例:`, scatterData.slice(0, 2))
+      console.log(`GreenBox2: ${chartKey} X值范围:`, {
+        min: Math.min(...scatterData.map(d => d[0])),
+        max: Math.max(...scatterData.map(d => d[0])),
+        stats: stats
+      })
 
       // 不同图表的颜色
       const chartColors = {
@@ -246,6 +275,48 @@ export default {
       }
 
       const color = chartColors[chartKey] || '#5470c6'
+
+      // 计算X轴范围，特别处理单个数据点的情况
+      const xMin = Math.min(...scatterData.map(d => d[0]))
+      const xMax = Math.max(...scatterData.map(d => d[0]))
+      const xRange = xMax - xMin
+      
+      // 对于编程习惯图表，确保X轴范围合理，避免点落在Y轴上
+      let xAxisMin, xAxisMax
+      if (chartKey === 'coding_habits') {
+        if (xRange === 0 || scatterData.length === 1) {
+          // 单个数据点或所有点X值相同，确保X轴范围是0-1，点不在边界
+          const xValue = xMin
+          xAxisMin = Math.max(0, xValue - 0.15)
+          xAxisMax = Math.min(1, xValue + 0.15)
+          // 如果点在边界附近，调整范围
+          if (xValue < 0.1) {
+            xAxisMin = 0
+            xAxisMax = Math.min(1, xValue + 0.3)
+          } else if (xValue > 0.9) {
+            xAxisMin = Math.max(0, xValue - 0.3)
+            xAxisMax = 1
+          }
+        } else {
+          // 多个数据点，使用统计信息或数据范围
+          xAxisMin = stats.x_min !== undefined ? Math.max(0, stats.x_min - 0.05) : Math.max(0, xMin - 0.05)
+          xAxisMax = stats.x_max !== undefined ? Math.min(1, stats.x_max + 0.05) : Math.min(1, xMax + 0.05)
+        }
+      } else {
+        // 其他图表类型
+        if (xRange === 0 || scatterData.length === 1) {
+          // 单个数据点，确保有合理的范围
+          const xValue = xMin
+          const padding = Math.max(Math.abs(xValue) * 0.2, 0.1)
+          xAxisMin = xValue - padding
+          xAxisMax = xValue + padding
+        } else {
+          // 多个数据点
+          const padding = xRange * 0.1
+          xAxisMin = stats.x_min !== undefined ? stats.x_min - padding : xMin - padding
+          xAxisMax = stats.x_max !== undefined ? stats.x_max + padding : xMax + padding
+        }
+      }
 
       const option = {
         tooltip: {
@@ -310,7 +381,8 @@ export default {
           left: '12%',
           right: '8%',
           bottom: '15%',
-          top: '10%'
+          top: '10%',
+          containLabel: false
         },
         xAxis: {
           type: 'value',
@@ -321,8 +393,8 @@ export default {
             fontSize: 12,
             fontWeight: 'bold'
           },
-          min: stats.x_min !== undefined ? stats.x_min : 'dataMin',
-          max: stats.x_max !== undefined ? stats.x_max : 'dataMax',
+          min: xAxisMin,
+          max: xAxisMax,
           axisLabel: {
             fontSize: 10,
             formatter: (value) => {
@@ -388,44 +460,26 @@ export default {
               shadowColor: color
             },
             focus: 'self'
-          },
-          // 暂时移除趋势线，避免错误影响图表显示
-          // markLine: (() => {
-          //   if (stats.correlation !== undefined && scatterData.length >= 2) {
-          //     const trendLineData = this.calculateTrendLine(scatterData, stats)
-          //     if (trendLineData && trendLineData.length === 2 && Array.isArray(trendLineData[0]) && Array.isArray(trendLineData[1])) {
-          //       return {
-          //         silent: true,
-          //         lineStyle: {
-          //           color: color,
-          //           type: 'dashed',
-          //           width: 2,
-          //           opacity: 0.4
-          //         },
-          //         data: [
-          //           { coord: trendLineData[0] },
-          //           { coord: trendLineData[1] }
-          //         ]
-          //       }
-          //     }
-          //   }
-          //   return undefined
-          // })()
+          }
         }]
       }
 
       try {
-        console.log(`GreenBox2: 设置${chartKey}图表选项，数据点数量:`, scatterData.length)
+        console.log(`GreenBox2: 设置${chartKey}图表选项，数据点数量:`, scatterData.length, 'X轴范围:', { min: xAxisMin, max: xAxisMax })
         this.chartInstances[chartKey].setOption(option, true)
         console.log(`GreenBox2: ${chartKey}图表设置成功`)
         
-        // 确保图表正确显示
-        this.$nextTick(() => {
+        // 确保图表正确显示，延迟resize以确保容器尺寸已更新
+        setTimeout(() => {
           if (this.chartInstances[chartKey] && ref && ref.offsetWidth > 0 && ref.offsetHeight > 0) {
-            this.chartInstances[chartKey].resize()
-            console.log(`GreenBox2: ${chartKey}图表resize成功`)
+            try {
+              this.chartInstances[chartKey].resize()
+              console.log(`GreenBox2: ${chartKey}图表resize成功`)
+            } catch (e) {
+              console.error(`GreenBox2: ${chartKey}图表resize失败:`, e)
+            }
           }
-        })
+        }, 100)
       } catch (e) {
         console.error(`GreenBox2: 设置${chartKey}图表失败:`, e)
         console.error(`GreenBox2: 错误详情:`, e.stack)
@@ -560,7 +614,9 @@ export default {
 .chart-content {
   flex: 1;
   width: 100%;
-  min-height: 0;
+  min-height: 150px;
+  min-width: 200px;
+  position: relative;
 }
 
 .loading-overlay,
