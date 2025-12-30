@@ -51,12 +51,12 @@
             </div>
           </div>
         </div>
-        <div class="frame green-frame small">
-          <div class="frame-content">
-            <h3>绿色框 2</h3>
-            <div v-if="greenBox2Data">
-              <pre>{{ JSON.stringify(greenBox2Data.slice(0, 3), null, 2) }}</pre>
-            </div>
+        <div class="frame green-frame small green-box2-container">
+          <div class="frame-content green-box2-content">
+            <GreenBox2 
+              :className="selectedClass"
+              :studentId="selectedStudent"
+            />
           </div>
         </div>
       </div>
@@ -95,6 +95,7 @@ import PinkBubbles from './components/PinkBubbles.vue'
 import PinkStateTrends from './components/PinkStateTrends.vue'
 import BlueBox1 from './components/BlueBox1.vue'
 import BlueBox2 from './components/BlueBox2.vue'
+import GreenBox2 from './components/GreenBox2.vue'
 
 export default {
   name: 'App',
@@ -103,7 +104,8 @@ export default {
     PinkBubbles,
     PinkStateTrends,
     BlueBox1,
-    BlueBox2
+    BlueBox2,
+    GreenBox2
   },
   data() {
     return {
@@ -282,6 +284,21 @@ export default {
 
 .green-frame.small {
   flex: 1;
+}
+
+.green-box2-container {
+  border: none !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.green-box2-content {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.green-box2-content h3 {
+  display: none;
 }
 
 .blue-frame {
