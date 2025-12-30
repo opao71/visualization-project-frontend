@@ -5,7 +5,7 @@
       <div class="header-item">
         <label class="label">class :</label>
         <select v-model="selectedClass" @change="onClassChange" class="select-box">
-          <option value="">请选择班级</option>
+          <option value="">请选择专业</option>
           <option v-for="cls in classes" :key="cls" :value="cls">{{ cls }}</option>
         </select>
       </div>
@@ -45,10 +45,7 @@
       <div class="middle-column">
         <div class="frame green-frame large">
           <div class="frame-content">
-            <h3>绿色框 1</h3>
-            <div v-if="greenBox1Data">
-              <pre>{{ JSON.stringify(greenBox1Data.slice(0, 5), null, 2) }}</pre>
-            </div>
+            <GreenLarge />
           </div>
         </div>
         <div class="frame green-frame small green-box2-container">
@@ -65,7 +62,6 @@
       <div class="right-column">
         <div class="frame blue-frame medium">
           <div class="frame-content">
-            <h3>蓝色框 1 - 个性化学习行为模式</h3>
             <BlueBox1 
               :className="selectedClass"
               :studentId="selectedStudent"
@@ -95,6 +91,7 @@ import PinkBubbles from './components/PinkBubbles.vue'
 import PinkStateTrends from './components/PinkStateTrends.vue'
 import BlueBox1 from './components/BlueBox1.vue'
 import BlueBox2 from './components/BlueBox2.vue'
+import GreenLarge from './components/GreenLarge.vue'
 import GreenBox2 from './components/GreenBox2.vue'
 
 export default {
@@ -105,7 +102,8 @@ export default {
     PinkStateTrends,
     BlueBox1,
     BlueBox2,
-    GreenBox2
+    GreenBox2,
+    GreenLarge
   },
   data() {
     return {
@@ -275,7 +273,7 @@ export default {
 }
 
 .green-frame {
-  border-color: #32cd32;
+  border-color: transparent;
 }
 
 .green-frame.large {
