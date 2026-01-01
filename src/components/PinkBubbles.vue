@@ -63,8 +63,10 @@ export default {
       //解构后端数据
       //气泡图数据
       const bubbleData = data.bubbleData || []
-      //知识维度标签
+      //知识维度标签（名称，用于显示）
       const xAxisLabels = data.xAxisLabels || []
+      //知识维度编码（用于查找索引）
+      const xAxisLabelsCode = data.xAxisLabelsCode || xAxisLabels
 
       // 计算提交次数的最大值，用于颜色映射
       const maxSubmissionCount = Math.max(
@@ -75,7 +77,8 @@ export default {
       // 构建单个系列数据，不再按知识点分组
       const seriesData = bubbleData.map(item => {
         const knowledge = item.knowledge || '未知'
-        const knowledgeIndex = xAxisLabels.indexOf(knowledge)
+        // 使用编码查找索引
+        const knowledgeIndex = xAxisLabelsCode.indexOf(knowledge)
         const x = knowledgeIndex >= 0 ? knowledgeIndex : 0
         return [
           x, // x: 知识维度索引
@@ -136,7 +139,7 @@ export default {
             return `
               <div style="text-align:left;">
                 <strong style="color: #64b5f6; font-size: 14px;">${item.title_ID}</strong><br/>
-                知识点: ${item.knowledge || '未知'}<br/>
+                知识点: ${item.knowledge_name || item.knowledge || '未知'}<br/>
                 平均用时: ${item.timeconsume || 'N/A'} ms<br/>
                 平均内存: ${item.memory || 'N/A'} KB<br/>
                 总提交量: ${item.submission_count || 0} 次<br/>

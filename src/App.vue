@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <!-- 顶部：class和student下拉列表 -->
+    <!-- 顶部：专业和学生下拉列表 -->
     <div class="header">
       <div class="header-item">
-        <label class="label">class :</label>
+        <label class="label">专业 :</label>
         <select v-model="selectedClass" @change="onClassChange" class="select-box">
           <option value="">请选择专业</option>
-          <option v-for="cls in classes" :key="cls" :value="cls">{{ cls }}</option>
+          <option v-for="cls in classes" :key="cls.code" :value="cls.code">{{ cls.name }}</option>
         </select>
       </div>
       <div class="header-item">
-        <label class="label">student :</label>
+        <label class="label">学生 :</label>
         <select v-model="selectedStudent" @change="onStudentChange" class="select-box">
           <option value="">请选择学生</option>
           <option v-for="student in filteredStudents" :key="student.student_ID" :value="student.student_ID">
-            {{ student.student_ID }}
+            {{ student.display_name }}
           </option>
         </select>
       </div>
@@ -124,7 +124,7 @@ export default {
       if (!this.selectedClass) {
         return []
       }
-      return this.students.filter(s => s.major === this.selectedClass)
+      return this.students.filter(s => s.major_code === this.selectedClass)
     }
   },
   mounted() {

@@ -62,8 +62,15 @@ export default {
       this.chart = echarts.init(this.$refs.chartContainer)
 
       const xAxisLabels = data?.heatedConfig?.xAxisLabels || []
+      const xAxisLabelsCode = data?.heatedConfig?.xAxisLabelsCode || []
       const yAxisLabels = data?.heatedConfig?.yAxisLabels || []
       const rawCoreData = data?.heatmapCoreData || []
+      
+      // 创建知识点编码到名称的映射
+      const knowledgeNameMap = {}
+      xAxisLabelsCode.forEach((code, idx) => {
+        knowledgeNameMap[code] = xAxisLabels[idx] || code
+      })
 
       const seriesData = rawCoreData.map(row => {
         const [
@@ -157,13 +164,14 @@ export default {
             const correctRate = meta.correctRate != null ? `${meta.correctRate}%` : 'N/A'
             const discrimination =
               meta.discrimination != null ? meta.discrimination.toFixed(2) : 'N/A'
+            const knowledgeName = knowledgeNameMap[meta.knowledge] || meta.knowledge || '未知'
             return `
               <div style="text-align:left;">
                 <div style="font-size:14px;font-weight:bold;color:#1f2937;margin-bottom:4px;">
                   题目：${meta.qAlias || meta.titleId || '未知'}
                 </div>
                 <div>题目ID：${meta.titleId || '未知'}</div>
-                <div>知识点：${meta.knowledge || '未知'}</div>
+                <div>知识点：${knowledgeName}</div>
                 <div>子知识点：${meta.subKnowledge || '无'}</div>
                 <div>匹配度：${meta.matchIndex} / 10</div>
                 <div>正确率：${correctRate}</div>

@@ -23,7 +23,8 @@ export default {
       chart: null,
       loading: false,
       error: null,
-      apiBaseUrl: 'http://localhost:5000/api'
+      apiBaseUrl: 'http://localhost:5000/api',
+      chartData: null  // 保存图表数据用于tooltip映射
     }
   },
   mounted() {
@@ -52,6 +53,7 @@ export default {
         console.log('正在请求桑基图数据...', `${this.apiBaseUrl}/green/top/sankey`)
         const response = await axios.get(`${this.apiBaseUrl}/green/top/sankey`)
         console.log('桑基图数据获取成功:', response.data)
+        this.chartData = response.data  // 保存数据用于tooltip映射
         this.renderChart(response.data)
       } catch (err) {
         console.error('获取桑基图数据失败:', err)
@@ -614,7 +616,8 @@ export default {
       // 格式化节点标签
       switch (originalNode.category) {
         case 0: // 知识点
-          return `${originalNode.id.replace('k_', '')}`
+          // 优先使用 name 字段（知识点名称），如果没有则使用 id
+          return originalNode.name || originalNode.id.replace('k_', '')
         case 1: // 专业
           return originalNode.name || originalNode.id
         case 2: // 学生
@@ -644,9 +647,21 @@ export default {
     
     formatLinkTooltip(params, originalLink) {
       // 格式化链路提示信息
+      // 获取节点名称映射
+      const nodeNameMap = {}
+      if (this.chartData && this.chartData.nodes) {
+        this.chartData.nodes.forEach(node => {
+          nodeNameMap[node.id] = node.name || node.id
+        })
+      }
+      
+      // 将节点ID转换为名称
+      const sourceName = nodeNameMap[params.data.source] || params.data.source
+      const targetName = nodeNameMap[params.data.target] || params.data.target
+      
       let tooltip = `<div style="padding: 5px;">
         <strong style="font-size: 13px; color: #2c3e50;">
-          ${params.data.source} → ${params.data.target}
+          ${sourceName} → ${targetName}
         </strong><br/>`
       
       if (originalLink.extra) {

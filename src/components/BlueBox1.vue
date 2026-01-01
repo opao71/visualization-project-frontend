@@ -1156,21 +1156,6 @@ export default {
         return
       }
 
-      // 提取方法名称的后5个字母
-      const extractMethodShortName = (methodName) => {
-        if (!methodName) return '未知'
-        // 如果是 Method_xxx 格式，提取下划线后的前5个字符
-        if (methodName.includes('_')) {
-          const parts = methodName.split('_')
-          if (parts.length > 1) {
-            const suffix = parts[1]
-            return suffix.substring(0, 5)
-          }
-        }
-        // 如果不是标准格式，返回最后5个字符
-        return methodName.length > 5 ? methodName.substring(methodName.length - 5) : methodName
-      }
-
       // 美观的颜色方案
       const colorPalette = [
         '#5470c6', // 蓝色
@@ -1186,12 +1171,12 @@ export default {
       ]
 
       const pieData = data.map((item, index) => {
-        const methodName = item.method || item.method_name || '未知方法'
-        const shortName = extractMethodShortName(methodName)
+        // 优先使用后端返回的友好名称（method_name），如果没有则使用method字段
+        const displayName = item.method_name || item.method || '未知方法'
         return {
           value: item.count,
-          name: shortName,
-          fullName: methodName, // 保留完整名称用于tooltip
+          name: displayName, // 使用友好的方法名称
+          methodCode: item.method, // 保留原始编码用于调试
           itemStyle: {
             color: colorPalette[index % colorPalette.length]
           }
@@ -1212,11 +1197,14 @@ export default {
           },
           formatter: function(params) {
             if (!params) return ''
-            const fullName = params.data.fullName || params.name
-            return `<div style="padding: 5px;">
-              <strong>${fullName}</strong><br/>
-              使用次数: ${params.value || 0}<br/>
-              占比: ${params.percent || 0}%
+            // 使用友好的方法名称显示
+            const methodName = params.data.name || params.name || '未知方法'
+            return `<div style="padding: 8px;">
+              <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px;">${methodName}</div>
+              <div style="color: #333; margin-top: 5px;">
+                <div>使用次数: <strong>${params.value || 0}</strong></div>
+                <div>占比: <strong>${params.percent || 0}%</strong></div>
+              </div>
             </div>`
           }
         },
@@ -1335,7 +1323,8 @@ export default {
         return
       }
 
-      const knowledgeIds = data.map(item => item.knowledge_id)
+      // 使用知识点名称而不是编码
+      const knowledgeNames = data.map(item => item.knowledge_name || item.knowledge_id || '未知知识点')
       const masteryValues = data.map(item => item.mastery_percentage || item.mastery * 100)
       const colors = data.map(item => {
         if (item.level === 'good') return '#32cd32'
@@ -1388,7 +1377,7 @@ export default {
         },
         yAxis: {
           type: 'category',
-          data: knowledgeIds
+          data: knowledgeNames
         },
         series: [{
           data: masteryValues.map((val, idx) => ({
