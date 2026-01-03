@@ -1,189 +1,16 @@
 <template>
   <div id="app">
-    <!-- 顶部：专业和学生下拉列表 -->
-    <div class="header">
-      <div class="header-item">
-        <label class="label">专业 :</label>
-        <select v-model="selectedClass" @change="onClassChange" class="select-box">
-          <option value="">请选择专业</option>
-          <option v-for="cls in classes" :key="cls.code" :value="cls.code">{{ cls.name }}</option>
-        </select>
-      </div>
-      <div class="header-item">
-        <label class="label">学生 :</label>
-        <select v-model="selectedStudent" @change="onStudentChange" class="select-box">
-          <option value="">请选择学生</option>
-          <option v-for="student in filteredStudents" :key="student.student_ID" :value="student.student_ID">
-            {{ student.display_name }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <!-- 主要内容区域 -->
-    <div class="main-content">
-      <!-- 左列：3个粉色框 -->
-      <div class="left-column">
-        <div class="frame pink-frame">
-          <div class="frame-content">
-            <PinkHeatmap />
-          </div>
-        </div>
-        <div class="frame pink-frame">
-          <div class="frame-content">
-            <PinkBubbles />
-          </div>
-        </div>
-        <div class="frame pink-frame">
-          <div class="frame-content">
-            <PinkStateTrends />
-          </div>
-        </div>
-      </div>
-
-      <!-- 中列：2个绿色框 -->
-      <div class="middle-column">
-        <div class="frame green-frame large">
-          <div class="frame-content">
-            <GreenLarge />
-          </div>
-        </div>
-        <div class="frame green-frame small green-box2-container">
-          <div class="frame-content green-box2-content">
-            <GreenBox2 
-              :className="selectedClass"
-              :studentId="selectedStudent"
-            />
-          </div>
-        </div>
-      </div>
-
-      <!-- 右列：2个蓝色框 -->
-      <div class="right-column">
-        <div class="frame blue-frame medium">
-          <div class="frame-content">
-            <BlueBox1 
-              :className="selectedClass"
-              :studentId="selectedStudent"
-              @month-change="handleBlueBox1MonthChange"
-            />
-          </div>
-        </div>
-        <div class="frame blue-frame small">
-          <div class="frame-content">
-            <h3>蓝色框 2 - 时间维度分析</h3>
-            <BlueBox2 
-              :className="selectedClass"
-              :studentId="selectedStudent"
-              :selectedMonth="blueBox2SelectedMonth"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+    <Dashboard />
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import PinkHeatmap from './components/PinkHeatmap.vue'
-import PinkBubbles from './components/PinkBubbles.vue'
-import PinkStateTrends from './components/PinkStateTrends.vue'
-import BlueBox1 from './components/BlueBox1.vue'
-import BlueBox2 from './components/BlueBox2.vue'
-import GreenLarge from './components/GreenLarge.vue'
-import GreenBox2 from './components/GreenBox2.vue'
+import Dashboard from '@/pages/Dashboard.vue'
 
 export default {
   name: 'App',
   components: {
-    PinkHeatmap,
-    PinkBubbles,
-    PinkStateTrends,
-    BlueBox1,
-    BlueBox2,
-    GreenBox2,
-    GreenLarge
-  },
-  data() {
-    return {
-      classes: [],
-      students: [],
-      selectedClass: '',
-      selectedStudent: '',
-      greenBox1Data: null,
-      greenBox2Data: null,
-      blueBox1Data: null,
-      blueBox2Data: null,
-      blueBox2SelectedMonth: '',
-      apiBaseUrl: 'http://localhost:5000/api'
-    }
-  },
-  computed: {
-    filteredStudents() {
-      if (!this.selectedClass) {
-        return []
-      }
-      return this.students.filter(s => s.major_code === this.selectedClass)
-    }
-  },
-  mounted() {
-    this.loadClasses()
-    this.loadStudents()
-  },
-  methods: {
-    handleBlueBox1MonthChange(month) {
-      this.blueBox2SelectedMonth = month
-    },
-    async loadClasses() {
-      try {
-        const response = await axios.get(`${this.apiBaseUrl}/classes`)
-        this.classes = response.data
-      } catch (error) {
-        console.error('加载班级列表失败:', error)
-      }
-    },
-    async loadStudents() {
-      try {
-        const response = await axios.get(`${this.apiBaseUrl}/students`)
-        this.students = response.data
-      } catch (error) {
-        console.error('加载学生列表失败:', error)
-      }
-    },
-    async onClassChange() {
-      this.selectedStudent = ''
-      if (this.selectedClass) {
-        await this.loadClassData()
-      }
-    },
-    async onStudentChange() {
-      if (this.selectedStudent) {
-        await this.loadStudentData()
-      }
-    },
-    async loadClassData() {
-      try {
-        const response = await axios.get(`${this.apiBaseUrl}/class-data/${this.selectedClass}`)
-        this.greenBox1Data = response.data.greenBox1
-        this.greenBox2Data = response.data.greenBox2
-        this.blueBox1Data = response.data.blueBox1
-        this.blueBox2Data = response.data.blueBox2
-      } catch (error) {
-        console.error('加载班级数据失败:', error)
-      }
-    },
-    async loadStudentData() {
-      try {
-        const response = await axios.get(`${this.apiBaseUrl}/student-data/${this.selectedStudent}`)
-        this.greenBox1Data = response.data.greenBox1
-        this.greenBox2Data = response.data.greenBox2
-        this.blueBox1Data = response.data.blueBox1
-        this.blueBox2Data = response.data.blueBox2
-      } catch (error) {
-        console.error('加载学生数据失败:', error)
-      }
-    }
+    Dashboard
   }
 }
 </script>
@@ -197,12 +24,79 @@ export default {
 
 #app {
   width: 100vw;
-  height: 100vh;
-  padding: 20px;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  background: white;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+  background: #0a0e27;
 }
 
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  background: rgba(10, 14, 39, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(100, 181, 246, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nav-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 8px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(100, 181, 246, 0.4);
+  color: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+.nav-link.active {
+  background: rgba(100, 181, 246, 0.15);
+  border-color: rgba(100, 181, 246, 0.5);
+  color: #64b5f6;
+}
+
+.nav-link .icon {
+  font-size: 1.2rem;
+}
+
+/* 原始样式 */
 .header {
   display: flex;
   justify-content: center;

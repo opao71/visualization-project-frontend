@@ -1,7 +1,6 @@
 <template>
   <div class="pink-state-trends">
     <div class="header-row">
-      <h3>答题状态</h3>
       <div class="dimension-tabs">
         <button
           v-for="opt in dimensionOptions"
@@ -129,7 +128,7 @@ export default {
         }
       }))
       const option = {
-        backgroundColor: '#f9fafb',
+        backgroundColor: 'transparent',
         tooltip: {
           trigger: 'axis',
           confine: false,
@@ -173,7 +172,7 @@ export default {
         },
         legend: {
           type: 'scroll',
-          bottom: 4,
+          bottom: 2,
           left: 8,
           right: 8,
           textStyle: {
@@ -184,8 +183,8 @@ export default {
         grid: {
           left: '5%',
           right: '15%',
-          top: '15%',
-          bottom: '12%',
+          top: '12%',
+          bottom: '8%',
           containLabel: true
         },
         xAxis: {
@@ -283,35 +282,18 @@ export default {
   flex-direction: column;
   position: relative;
   overflow: visible;
-}
-
-.pink-state-trends::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(148, 163, 184, 0.25) 0%, transparent 55%),
-    radial-gradient(circle at 80% 80%, rgba(209, 213, 219, 0.35) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
+  background: transparent;
 }
 
 .header-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: flex-end;
   padding: 6px 10px 0 10px;
-  position: relative;
-  z-index: 1;
-}
-
-.pink-state-trends h3 {
-  margin: 0;
-  font-size: 12px;
-  color: #111827;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
 }
 
 .dimension-tabs {
@@ -320,24 +302,38 @@ export default {
 }
 
 .tab-btn {
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
-  color: #4b5563;
-  border-radius: 999px;
-  padding: 2px 8px;
-  font-size: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(248, 250, 252, 0.5);
+  backdrop-filter: blur(10px);
+  color: #475569;
+  border-radius: 16px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.tab-btn.active {
-  background-color: #111827;
-  color: #f9fafb;
-  border-color: #111827;
+  transition: all 0.3s ease;
+  font-family: 'Microsoft YaHei', Arial, sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .tab-btn:hover {
-  background-color: #e5e7eb;
+  background: rgba(248, 250, 252, 0.7);
+  border-color: rgba(148, 163, 184, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.tab-btn.active {
+  background: rgba(139, 152, 218, 0.2);
+  backdrop-filter: blur(12px);
+  color: #4c5a93;
+  border-color: rgba(139, 152, 218, 0.4);
+  box-shadow: 0 2px 8px rgba(139, 152, 218, 0.15);
+}
+
+.tab-btn.active:hover {
+  background: rgba(139, 152, 218, 0.25);
+  border-color: rgba(139, 152, 218, 0.5);
+  box-shadow: 0 3px 10px rgba(139, 152, 218, 0.2);
 }
 
 .chart-container {

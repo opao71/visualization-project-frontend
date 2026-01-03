@@ -28,8 +28,22 @@ export default {
     }
   },
   mounted() {
-    this.initChart()
-    this.fetchData()
+    // 使用 $nextTick 确保 DOM 已完全渲染
+    this.$nextTick(() => {
+      this.initChart()
+      // 确保图表初始化后再获取数据
+      if (this.chart) {
+        this.fetchData()
+      } else {
+        console.error('图表容器未找到，延迟初始化')
+        setTimeout(() => {
+          this.initChart()
+          if (this.chart) {
+            this.fetchData()
+          }
+        }, 100)
+      }
+    })
     window.addEventListener('resize', this.handleResize)
   },
   beforeUnmount() {
@@ -338,9 +352,10 @@ export default {
             },
             label: {
               position: 'right',
-              fontSize: 9,
+              fontSize: 11,
               color: '#333',
               fontWeight: 'normal',
+              fontFamily: 'Microsoft YaHei, PingFang SC, Arial, sans-serif',
               padding: [0, 3]
             },
             levels: [
@@ -354,8 +369,9 @@ export default {
                   opacity: 0.4
                 },
                 label: {
-                  fontSize: 11,
+                  fontSize: 13,
                   fontWeight: '600',
+                  fontFamily: 'Microsoft YaHei, PingFang SC, Arial, sans-serif',
                   color: '#2c3e50'
                 }
               },
@@ -371,9 +387,10 @@ export default {
                   opacity: 0.35
                 },
                 label: {
-                  fontSize: 10,
-                  fontWeight: '600',
-                  color: '#2c3e50'
+                  fontSize: 16,
+                  fontWeight: '700',
+                  fontFamily: 'Microsoft YaHei, PingFang SC, Arial, sans-serif',
+                  color: '#1a1a1a'
                 }
               },
               {
@@ -386,8 +403,9 @@ export default {
                   opacity: 0.3
                 },
                 label: {
-                  fontSize: 9,
+                  fontSize: 10,
                   fontWeight: 'normal',
+                  fontFamily: 'Microsoft YaHei, PingFang SC, Arial, sans-serif',
                   color: '#555'
                 }
               },
@@ -402,8 +420,9 @@ export default {
                   opacity: 0.2
                 },
                 label: {
-                  fontSize: 7,
+                  fontSize: 9,
                   fontWeight: 'normal',
+                  fontFamily: 'Microsoft YaHei, PingFang SC, Arial, sans-serif',
                   color: '#666'
                 }
               }
@@ -691,7 +710,7 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: transparent;
 }
 
 .chart-header {

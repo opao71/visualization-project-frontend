@@ -1,6 +1,5 @@
 <template>
   <div class="pink-heatmap">
-    <h3>题目匹配度</h3>
     <div v-if="loading" class="loading">加载中...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else ref="chartContainer" class="chart-container"></div>
@@ -139,7 +138,7 @@ export default {
       this.fullSeriesData = seriesData
 
       const option = {
-        backgroundColor: '#f9fafb',
+        backgroundColor: 'transparent',
         tooltip: {
           trigger: 'item',
           confine: false,
@@ -357,33 +356,9 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+  background: transparent;
   position: relative;
   overflow: visible;
-}
-
-.pink-heatmap::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(148, 163, 184, 0.25) 0%, transparent 55%),
-    radial-gradient(circle at 80% 80%, rgba(209, 213, 219, 0.35) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.pink-heatmap h3 {
-  margin: 0;
-  padding: 8px 15px;
-  font-size: 12px;
-  color: #111827;
-  text-shadow: none;
-  position: relative;
-  z-index: 1;
 }
 
 .chart-container {

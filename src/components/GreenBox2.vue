@@ -269,9 +269,9 @@ export default {
       // 不同图表的颜色
       const chartColors = {
         learning_duration: '#5470c6',    // 蓝色
-        coding_habits: '#91cc75',          // 绿色
+        coding_habits: '#7dd3c0',          // 柔和绿色
         average_score: '#fac858',          // 黄色
-        submit_count: '#ee6666'            // 红色
+        submit_count: '#f4a5a8'            // 柔和红色
       }
 
       const color = chartColors[chartKey] || '#5470c6'
@@ -390,13 +390,17 @@ export default {
           nameLocation: 'middle',
           nameGap: 30,
           nameTextStyle: {
-            fontSize: 12,
-            fontWeight: 'bold'
+            fontSize: 14,
+            fontWeight: 'bold',
+            fontFamily: 'Microsoft YaHei, Arial, sans-serif',
+            color: '#333'
           },
           min: xAxisMin,
           max: xAxisMax,
           axisLabel: {
-            fontSize: 10,
+            fontSize: 12,
+            fontFamily: 'Microsoft YaHei, Arial, sans-serif',
+            color: '#555',
             formatter: (value) => {
               if (chartKey === 'coding_habits') {
                 return (value * 100).toFixed(0) + '%'
@@ -422,13 +426,17 @@ export default {
           nameLocation: 'middle',
           nameGap: 50,
           nameTextStyle: {
-            fontSize: 12,
-            fontWeight: 'bold'
+            fontSize: 14,
+            fontWeight: 'bold',
+            fontFamily: 'Microsoft YaHei, Arial, sans-serif',
+            color: '#333'
           },
           min: stats.y_min !== undefined ? stats.y_min : 0,
           max: stats.y_max !== undefined ? stats.y_max : 80,
           axisLabel: {
-            fontSize: 10,
+            fontSize: 12,
+            fontFamily: 'Microsoft YaHei, Arial, sans-serif',
+            color: '#555',
             formatter: '{value}%'
           },
           splitLine: {
@@ -561,7 +569,7 @@ export default {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  background: white;
+  background: transparent;
 }
 
 .charts-grid {
@@ -581,10 +589,8 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: transparent;
   border: none;
-  border-right: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
   overflow: hidden;
 }
 
@@ -597,18 +603,19 @@ export default {
 }
 
 .chart-title {
-  padding: 6px 8px;
-  font-size: 11px;
+  padding: 8px 10px;
+  font-size: 13px;
   font-weight: 600;
-  color: #333;
-  background: #f9f9f9;
+  color: #1a1a1a;
+  background: transparent;
   border-bottom: 1px solid #e0e0e0;
   text-align: center;
   white-space: normal;
   word-wrap: break-word;
   overflow: visible;
   flex-shrink: 0;
-  line-height: 1.3;
+  line-height: 1.4;
+  font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
 }
 
 .chart-content {
@@ -640,7 +647,7 @@ export default {
   width: 30px;
   height: 30px;
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #32cd32;
+  border-top: 3px solid #7dd3c0;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 10px;
@@ -660,17 +667,15 @@ export default {
 
 .retry-btn {
   padding: 6px 16px;
-  background-color: #32cd32;
+  background-color: #7dd3c0;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 11px;
-  transition: all 0.15s ease;
+  font-size: 12px;
 }
 
 .retry-btn:hover {
-  background-color: #28a428;
+  background-color: #5bc4b0;
 }
 </style>
-

@@ -237,7 +237,7 @@ export default {
             value: [item.hour, item.count],
             symbolSize: size,
             itemStyle: {
-              color: '#32cd32',
+              color: '#7dd3c0',
               opacity: 0.7
             }
           }
@@ -444,7 +444,7 @@ export default {
             name: '答题数',
             type: 'line',
             data: questionCounts,
-            itemStyle: { color: '#32cd32' },
+            itemStyle: { color: '#7dd3c0' },
             smooth: true
           },
           {
@@ -551,7 +551,7 @@ export default {
           left: 'center',
           bottom: '5%',
           inRange: {
-            color: ['#ffffcc', '#ffeda0', '#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c']
+            color: ['#e8f5f3', '#b8e6de', '#7dd3c0', '#5bc4b0', '#3ba89f', '#2a8a7f', '#1e6b5f']
           }
         },
         series: [{
@@ -662,7 +662,7 @@ export default {
   flex-direction: column;
   position: relative;
   overflow: visible;
-  background: white;
+  background: transparent;
 }
 
 .tab-section {
@@ -677,26 +677,40 @@ export default {
 }
 
 .tab-item {
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
-  color: #4b5563;
-  border-radius: 999px;
-  padding: 2px 8px;
-  font-size: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(248, 250, 252, 0.5);
+  backdrop-filter: blur(10px);
+  color: #475569;
+  border-radius: 16px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.3s ease;
   white-space: nowrap;
   flex-shrink: 0;
+  font-family: 'Microsoft YaHei', Arial, sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .tab-item:hover {
-  background-color: #e5e7eb;
+  background: rgba(248, 250, 252, 0.7);
+  border-color: rgba(148, 163, 184, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .tab-item.active {
-  background-color: #111827;
-  color: #f9fafb;
-  border-color: #111827;
+  background: rgba(139, 152, 218, 0.2);
+  backdrop-filter: blur(12px);
+  color: #4c5a93;
+  border-color: rgba(139, 152, 218, 0.4);
+  box-shadow: 0 2px 8px rgba(139, 152, 218, 0.15);
+}
+
+.tab-item.active:hover {
+  background: rgba(139, 152, 218, 0.25);
+  border-color: rgba(139, 152, 218, 0.5);
+  box-shadow: 0 3px 10px rgba(139, 152, 218, 0.2);
 }
 
 .chart-container-wrapper {

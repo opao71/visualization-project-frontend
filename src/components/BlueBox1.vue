@@ -885,9 +885,9 @@ export default {
       
       // 学习模式颜色
       const patternColors = {
-        '探索尝试型': '#32cd32',  // 绿色
+        '探索尝试型': '#7dd3c0',  // 柔和绿色
         '广泛多样型': '#ffa500',  // 橙色
-        '集中针对型': '#ff6347'   // 红色
+        '集中针对型': '#f4a5a8'   // 柔和红色
       }
       
       if (isStudentMode) {
@@ -1159,15 +1159,15 @@ export default {
       // 美观的颜色方案
       const colorPalette = [
         '#5470c6', // 蓝色
-        '#91cc75', // 绿色
+        '#7dd3c0', // 柔和绿色
         '#fac858', // 黄色
-        '#ee6666', // 红色
+        '#f4a5a8', // 柔和红色
         '#73c0de', // 浅蓝色
-        '#3ba272', // 深绿色
+        '#6bc4a6', // 薄荷绿
         '#fc8452', // 橙色
         '#9a60b4', // 紫色
         '#ea7ccc', // 粉色
-        '#ff9f7f'  // 浅橙色
+        '#ffd4a3'  // 柔和橙色
       ]
 
       const pieData = data.map((item, index) => {
@@ -1327,9 +1327,9 @@ export default {
       const knowledgeNames = data.map(item => item.knowledge_name || item.knowledge_id || '未知知识点')
       const masteryValues = data.map(item => item.mastery_percentage || item.mastery * 100)
       const colors = data.map(item => {
-        if (item.level === 'good') return '#32cd32'
+        if (item.level === 'good') return '#7dd3c0'
         if (item.level === 'medium') return '#ffa500'
-        return '#ff6347'
+        return '#f4a5a8'
       })
 
       const option = {
@@ -1427,7 +1427,7 @@ export default {
   flex-direction: column;
   position: relative;
   overflow: visible;
-  background: white;
+  background: transparent;
 }
 
 .filter-section {
@@ -1445,43 +1445,83 @@ export default {
 
 .filter-label {
   font-size: 12px;
-  font-weight: normal;
-  color: #111827;
+  font-weight: 500;
+  color: #1f2937;
+  font-family: 'Microsoft YaHei', Arial, sans-serif;
 }
 
 .month-select {
-  padding: 4px 8px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 11px;
-  min-width: 120px;
-  background: #f9fafb;
+  padding: 5px 10px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 6px;
+  font-size: 12px;
+  min-width: 130px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  color: #475569;
+  font-family: 'Microsoft YaHei', Arial, sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.month-select:hover {
+  border-color: rgba(148, 163, 184, 0.5);
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.month-select:focus {
+  outline: none;
+  border-color: rgba(148, 163, 184, 0.6);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.1);
 }
 
 .filter-btn,
 .reset-btn {
-  padding: 4px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 11px;
+  padding: 5px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
-  background-color: #f9fafb;
-  color: #4b5563;
+  transition: all 0.3s ease;
+  font-family: 'Microsoft YaHei', Arial, sans-serif;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.filter-btn {
+  background: rgba(139, 152, 218, 0.15);
+  color: #4c5a93;
 }
 
 .filter-btn:hover {
-  background-color: #e5e7eb;
+  background: rgba(139, 152, 218, 0.25);
+  border-color: rgba(139, 152, 218, 0.4);
+  box-shadow: 0 2px 6px rgba(139, 152, 218, 0.15);
 }
 
-.filter-btn.active {
-  background-color: #111827;
-  color: #f9fafb;
-  border-color: #111827;
+.filter-btn:active {
+  background: rgba(139, 152, 218, 0.3);
+  box-shadow: 0 1px 2px rgba(139, 152, 218, 0.15);
+}
+
+.reset-btn {
+  background: rgba(236, 153, 185, 0.15);
+  color: #a85179;
 }
 
 .reset-btn:hover {
-  background-color: #e5e7eb;
+  background: rgba(236, 153, 185, 0.25);
+  border-color: rgba(236, 153, 185, 0.4);
+  box-shadow: 0 2px 6px rgba(236, 153, 185, 0.15);
+}
+
+.reset-btn:active {
+  background: rgba(236, 153, 185, 0.3);
+  box-shadow: 0 1px 2px rgba(236, 153, 185, 0.15);
 }
 
 .tab-section {
@@ -1496,26 +1536,40 @@ export default {
 }
 
 .tab-item {
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
-  color: #4b5563;
-  border-radius: 999px;
-  padding: 2px 8px;
-  font-size: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(248, 250, 252, 0.5);
+  backdrop-filter: blur(10px);
+  color: #475569;
+  border-radius: 16px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.3s ease;
   white-space: nowrap;
   flex-shrink: 0;
+  font-family: 'Microsoft YaHei', Arial, sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .tab-item:hover {
-  background-color: #e5e7eb;
+  background: rgba(248, 250, 252, 0.7);
+  border-color: rgba(148, 163, 184, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .tab-item.active {
-  background-color: #111827;
-  color: #f9fafb;
-  border-color: #111827;
+  background: rgba(139, 152, 218, 0.2);
+  backdrop-filter: blur(12px);
+  color: #4c5a93;
+  border-color: rgba(139, 152, 218, 0.4);
+  box-shadow: 0 2px 8px rgba(139, 152, 218, 0.15);
+}
+
+.tab-item.active:hover {
+  background: rgba(139, 152, 218, 0.25);
+  border-color: rgba(139, 152, 218, 0.5);
+  box-shadow: 0 3px 10px rgba(139, 152, 218, 0.2);
 }
 
 .chart-container-wrapper {
