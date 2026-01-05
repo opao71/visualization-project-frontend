@@ -1,5 +1,6 @@
 <template>
   <div class="blue-box-2">
+    <h3>学习行为分析</h3>
     <!-- Tab切换区域 -->
     <div class="tab-section">
       <div 
@@ -237,7 +238,7 @@ export default {
             value: [item.hour, item.count],
             symbolSize: size,
             itemStyle: {
-              color: '#32cd32',
+              color: '#009F88',
               opacity: 0.7
             }
           }
@@ -662,41 +663,61 @@ export default {
   flex-direction: column;
   position: relative;
   overflow: visible;
-  background: white;
+  background: #ffffff;
 }
 
-.tab-section {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 10px;
-  padding: 6px 10px 0 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
+.blue-box-2 h3 {
+  margin: 0;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e4d2b;
+  text-align: center;
+  background: linear-gradient(180deg, #f5f1e8 0%, #ebe5d9 100%);
+  border-bottom: 2px solid #d4af37;
+  font-family:"楷体", serif;
+  letter-spacing: 0.5px;
   position: relative;
   z-index: 1;
 }
 
+.tab-section {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 0;
+  padding: 10px 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  z-index: 1;
+  background: #fefdfb;
+  border-bottom: 1px solid #ebe5d9;
+}
+
 .tab-item {
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
-  color: #4b5563;
-  border-radius: 999px;
-  padding: 2px 8px;
-  font-size: 10px;
+  border: 1px solid #d4af37;
+  background-color: #f5f1e8;
+  color: #2d5a3a;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
   white-space: nowrap;
   flex-shrink: 0;
+  font-family: 'Georgia', serif;
+  font-weight: 500;
 }
 
 .tab-item:hover {
-  background-color: #e5e7eb;
+  background-color: #ebe5d9;
+  border-color: #b8941f;
 }
 
 .tab-item.active {
-  background-color: #111827;
-  color: #f9fafb;
-  border-color: #111827;
+  background-color: #2d5a3a;
+  color: #f5f1e8;
+  border-color: #2d5a3a;
 }
 
 .chart-container-wrapper {
@@ -707,6 +728,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: visible;
+  background: #fefdfb;
 }
 
 .chart-container {
@@ -740,13 +762,16 @@ export default {
   color: #6b7280;
   position: relative;
   z-index: 1;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 14px;
 }
 
 .loading-spinner {
   width: 30px;
   height: 30px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #111827;
+  border: 3px solid #ebe5d9;
+  border-top: 3px solid #2d5a3a;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -757,25 +782,27 @@ export default {
 }
 
 .error-message {
-  color: #b91c1c;
-  font-size: 12px;
+  color: #8b4513;
+  font-size: 13px;
   margin-bottom: 10px;
   text-align: center;
+  font-family: 'Georgia', serif;
 }
 
 .retry-btn {
-  padding: 4px 12px;
-  background-color: #111827;
-  color: #f9fafb;
-  border: 1px solid #111827;
+  padding: 6px 16px;
+  background-color: #2d5a3a;
+  color: #f5f1e8;
+  border: 1px solid #2d5a3a;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 11px;
-  transition: all 0.15s ease;
+  font-size: 12px;
+  font-family: 'Georgia', serif;
+  transition: all 0.2s ease;
 }
 
 .retry-btn:hover {
-  background-color: #374151;
+  background-color: #1e4d2b;
 }
 </style>
 

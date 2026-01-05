@@ -142,9 +142,17 @@ export default {
         backgroundColor: '#f9fafb',
         tooltip: {
           trigger: 'item',
-          confine: false,
+          confine: true,
           position: function(point, params, dom, rect, size) {
-            return [point[0] + 20, point[1] - size.contentSize[1] / 2]
+            // 智能定位：优先显示在鼠标右侧，如果空间不够则显示在左侧
+            const x = point[0] + 20
+            const y = point[1] - size.contentSize[1] / 2
+            
+            // 如果右侧空间不够，显示在左侧
+            if (x + size.contentSize[0] > size.viewSize[0]) {
+              return [point[0] - size.contentSize[0] - 20, y]
+            }
+            return [x, y]
           },
           padding: 10,
           backgroundColor: '#ffffff',
@@ -357,31 +365,22 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+  background: #ffffff;
   position: relative;
   overflow: visible;
 }
 
-.pink-heatmap::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(148, 163, 184, 0.25) 0%, transparent 55%),
-    radial-gradient(circle at 80% 80%, rgba(209, 213, 219, 0.35) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
-}
-
 .pink-heatmap h3 {
   margin: 0;
-  padding: 8px 15px;
-  font-size: 12px;
-  color: #111827;
-  text-shadow: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e4d2b;
+  text-align: center;
+  background: linear-gradient(180deg, #f5f1e8 0%, #ebe5d9 100%);
+  border-bottom: 2px solid #d4af37;
+  font-family:"楷体", serif;
+  letter-spacing: 0.5px;
   position: relative;
   z-index: 1;
 }
@@ -393,6 +392,7 @@ export default {
   height: 100%;
   position: relative;
   z-index: 1;
+  background: #fefdfb;
 }
 
 .loading,
@@ -401,13 +401,15 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  color: #b0b0b0;
+  font-size: 14px;
+  color: #6b7280;
   position: relative;
   z-index: 1;
+  font-family: 'Georgia', serif;
+  font-style: italic;
 }
 
 .error {
-  color: #ff6b6b;
+  color: #8b4513;
 }
 </style>

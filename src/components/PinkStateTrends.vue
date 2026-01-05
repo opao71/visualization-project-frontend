@@ -132,7 +132,18 @@ export default {
         backgroundColor: '#f9fafb',
         tooltip: {
           trigger: 'axis',
-          confine: false,
+          confine: true,
+          position: function(point, params, dom, rect, size) {
+            // 智能定位：优先显示在鼠标右侧，如果空间不够则显示在左侧
+            const x = point[0] + 20
+            const y = point[1] - size.contentSize[1] / 2
+            
+            // 如果右侧空间不够，显示在左侧
+            if (x + size.contentSize[0] > size.viewSize[0]) {
+              return [point[0] - size.contentSize[0] - 20, y]
+            }
+            return [x, y]
+          },
           padding: 10,
           backgroundColor: '#ffffff',
           borderColor: 'rgba(107, 114, 128, 0.4)',
@@ -281,63 +292,59 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: #ffffff;
   position: relative;
   overflow: visible;
-}
-
-.pink-state-trends::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(148, 163, 184, 0.25) 0%, transparent 55%),
-    radial-gradient(circle at 80% 80%, rgba(209, 213, 219, 0.35) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
 }
 
 .header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 10px 0 10px;
+  padding: 12px 20px;
+  background: linear-gradient(180deg, #f5f1e8 0%, #ebe5d9 100%);
+  border-bottom: 2px solid #d4af37;
   position: relative;
   z-index: 1;
 }
 
 .pink-state-trends h3 {
   margin: 0;
-  font-size: 12px;
-  color: #111827;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e4d2b;
+  text-align: left;
+  font-family:"楷体", serif;
+  letter-spacing: 0.5px;
 }
 
 .dimension-tabs {
   display: flex;
-  gap: 4px;
+  gap: 6px;
 }
 
 .tab-btn {
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
-  color: #4b5563;
-  border-radius: 999px;
-  padding: 2px 8px;
-  font-size: 10px;
+  border: 1px solid #d4af37;
+  background-color: #f5f1e8;
+  color: #2d5a3a;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
+  font-family: 'Georgia', serif;
+  font-weight: 500;
 }
 
 .tab-btn.active {
-  background-color: #111827;
-  color: #f9fafb;
-  border-color: #111827;
+  background-color: #2d5a3a;
+  color: #f5f1e8;
+  border-color: #2d5a3a;
 }
 
 .tab-btn:hover {
-  background-color: #e5e7eb;
+  background-color: #ebe5d9;
+  border-color: #b8941f;
 }
 
 .chart-container {
@@ -347,6 +354,7 @@ export default {
   height: 100%;
   position: relative;
   z-index: 1;
+  background: #fefdfb;
 }
 
 .loading,
@@ -355,13 +363,15 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 14px;
   color: #6b7280;
   position: relative;
   z-index: 1;
+  font-family: 'Georgia', serif;
+  font-style: italic;
 }
 
 .error {
-  color: #b91c1c;
+  color: #8b4513;
 }
 </style>

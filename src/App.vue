@@ -1,26 +1,39 @@
 <template>
   <div id="app">
-    <!-- 顶部：专业和学生下拉列表 -->
+    <!-- 顶部：标题在左，下拉框在右 -->
     <div class="header">
-      <div class="header-item">
-        <label class="label">专业 :</label>
-        <select v-model="selectedClass" @change="onClassChange" class="select-box">
-          <option value="">请选择专业</option>
-          <option v-for="cls in classes" :key="cls.code" :value="cls.code">{{ cls.name }}</option>
-        </select>
+      <!-- 标题 -->
+      <div class="header-title">
+        <h1>时序教育可视分析系统</h1>
       </div>
-      <div class="header-item">
-        <label class="label">学生 :</label>
-        <select v-model="selectedStudent" @change="onStudentChange" class="select-box">
-          <option value="">请选择学生</option>
-          <option v-for="student in filteredStudents" :key="student.student_ID" :value="student.student_ID">
-            {{ student.display_name }}
-          </option>
-        </select>
+      <!-- 下拉框区域 -->
+      <div class="header-controls">
+        <div class="header-item">
+          <label class="label">专业 :</label>
+          <div class="custom-select">
+            <select v-model="selectedClass" @change="onClassChange" class="select-box">
+              <option value="">请选择专业</option>
+              <option v-for="cls in classes" :key="cls.code" :value="cls.code">{{ cls.name }}</option>
+            </select>
+            <div class="select-arrow"></div>
+          </div>
+        </div>
+        <div class="header-item">
+          <label class="label">学生 :</label>
+          <div class="custom-select">
+            <select v-model="selectedStudent" @change="onStudentChange" class="select-box">
+              <option value="">请选择学生</option>
+              <option v-for="student in filteredStudents" :key="student.student_ID" :value="student.student_ID">
+                {{ student.display_name }}
+              </option>
+            </select>
+            <div class="select-arrow"></div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- 主要内容区域 -->
+    <!-- 主要内容区域保持不变 -->
     <div class="main-content">
       <!-- 左列：3个粉色框 -->
       <div class="left-column">
@@ -71,7 +84,6 @@
         </div>
         <div class="frame blue-frame small">
           <div class="frame-content">
-            <h3>蓝色框 2 - 时间维度分析</h3>
             <BlueBox2 
               :className="selectedClass"
               :studentId="selectedStudent"
@@ -85,6 +97,7 @@
 </template>
 
 <script>
+// script部分保持不变
 import axios from 'axios'
 import PinkHeatmap from './components/PinkHeatmap.vue'
 import PinkBubbles from './components/PinkBubbles.vue'
@@ -198,112 +211,177 @@ export default {
 #app {
   width: 100vw;
   height: 100vh;
-  padding: 20px;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  background: white;
+  padding: 0;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: #f5f1e8;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
+/* 顶部样式 */
 .header {
+  background: linear-gradient(180deg, #1e4d2b 0%, #2d5a3a 100%);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 30px;
-  margin-bottom: 20px;
-  padding: 10px;
+  padding: 18px 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 100;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #d4af37 0%, #f4e5c3 50%, #d4af37 100%);
+}
+
+.header-title h1 {
+  color: #f5f1e8;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.header-controls {
+  display: flex;
+  gap: 40px;
 }
 
 .header-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .label {
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f5f1e8;
+  letter-spacing: 0.5px;
+  font-style: italic;
+}
+
+/* 下拉框美化样式 */
+.custom-select {
+  position: relative;
+  min-width: 220px;
 }
 
 .select-box {
-  padding: 5px 10px;
-  font-size: 16px;
-  min-width: 200px;
-  background: white;
+  width: 100%;
+  padding: 10px 35px 10px 15px;
+  font-size: 15px;
+  border: 2px solid #d4af37;
+  border-radius: 6px;
+  background: #f5f1e8;
+  color: #2d5a3a;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Georgia', serif;
+  font-weight: 500;
 }
 
+.select-box:focus {
+  outline: none;
+  border-color: #b8941f;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+  background: #ffffff;
+}
+
+.select-box:hover {
+  border-color: #b8941f;
+  background: #faf8f3;
+}
+
+.select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #2d5a3a;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.select-box:focus + .select-arrow {
+  transform: translateY(-50%) rotate(180deg);
+  border-top-color: #1e4d2b;
+}
+
+/* 主要内容区域 */
 .main-content {
   display: flex;
-  gap: 20px;
-  height: calc(100vh - 150px);
+  gap: 16px;
+  flex: 1;
+  padding: 16px;
+  overflow: hidden;
 }
 
 .left-column {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
   flex: 0 0 400px;
 }
 
 .middle-column {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
   flex: 1;
 }
 
 .right-column {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
   flex: 0 0 480px;
 }
 
 .frame {
-  border: 3px solid; /* 保留彩色边框，仅移除黑色边框 */
-  background: white;
-  padding: 15px;
-  overflow: auto;
+  border: 2px solid #d4af37;
+  background: #ffffff;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  position: relative;
+}
+
+.frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #2d5a3a 0%, #1e4d2b 100%);
+  z-index: 1;
 }
 
 .pink-frame {
-  border: none;
-  background: transparent;
-  padding: 0;
   flex: 2;
-  overflow: visible; 
-}
-
-.green-frame {
-  border-color: transparent;
 }
 
 .green-frame.large {
-  flex: 2;
+  flex: 1.5;
 }
 
 .green-frame.small {
-  flex: 1;
-}
-
-.green-box2-container {
-  border: none !important;
-  padding: 0 !important;
-  overflow: hidden;
-}
-
-.green-box2-content {
-  padding: 0 !important;
-  overflow: hidden;
-}
-
-.green-box2-content h3 {
-  display: none;
-}
-
-.blue-frame {
-  border: none;
-  background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
-  padding: 0;
-  overflow: visible;
+  flex: 1.5;
 }
 
 .blue-frame.medium {
@@ -317,22 +395,6 @@ export default {
 .frame-content {
   width: 100%;
   height: 100%;
-  overflow: visible; 
-}
-
-.frame-content h3 {
-  margin-bottom: 15px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #2c3e50;
-  text-align: center;
-  padding-bottom: 10px;
-  border-bottom: 2px solid rgba(65, 105, 225, 0.2);
-}
-
-.frame-content pre {
-  font-size: 12px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  overflow: hidden;
 }
 </style>

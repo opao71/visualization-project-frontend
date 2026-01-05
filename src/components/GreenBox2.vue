@@ -1,5 +1,6 @@
 <template>
   <div class="green-box-2">
+    <h3>学习模式分析</h3>
     <!-- 图表网格布局：2x2 -->
     <div class="charts-grid">
       <!-- 加载状态 -->
@@ -561,7 +562,22 @@ export default {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  background: white;
+  background: #ffffff;
+}
+
+.green-box-2 h3 {
+  margin: 0;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e4d2b;
+  text-align: center;
+  background: linear-gradient(180deg, #f5f1e8 0%, #ebe5d9 100%);
+  border-bottom: 2px solid #d4af37;
+  font-family:"楷体", serif;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
 }
 
 .charts-grid {
@@ -581,10 +597,10 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: #fefdfb;
   border: none;
-  border-right: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #d4af37;
+  border-bottom: 1px solid #d4af37;
   overflow: hidden;
 }
 
@@ -597,18 +613,20 @@ export default {
 }
 
 .chart-title {
-  padding: 6px 8px;
-  font-size: 11px;
+  padding: 8px 10px;
+  font-size: 13px;
   font-weight: 600;
-  color: #333;
-  background: #f9f9f9;
-  border-bottom: 1px solid #e0e0e0;
+  color: #1e4d2b;
+  background: linear-gradient(180deg, #f5f1e8 0%, #ebe5d9 100%);
+  border-bottom: 1px solid #d4af37;
   text-align: center;
   white-space: normal;
   word-wrap: break-word;
   overflow: visible;
   flex-shrink: 0;
   line-height: 1.3;
+  font-family: 'Georgia', serif;
+  font-style: italic;
 }
 
 .chart-content {
@@ -631,16 +649,18 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(245, 241, 232, 0.95);
   z-index: 10;
   color: #6b7280;
+  font-family: 'Georgia', serif;
+  font-style: italic;
 }
 
 .loading-spinner {
   width: 30px;
   height: 30px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #32cd32;
+  border: 3px solid #ebe5d9;
+  border-top: 3px solid #2d5a3a;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 10px;
@@ -652,25 +672,27 @@ export default {
 }
 
 .error-message {
-  color: #b91c1c;
+  color: #8b4513;
   margin-bottom: 10px;
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
+  font-family: 'Georgia', serif;
 }
 
 .retry-btn {
   padding: 6px 16px;
-  background-color: #32cd32;
-  color: white;
-  border: none;
+  background-color: #2d5a3a;
+  color: #f5f1e8;
+  border: 1px solid #2d5a3a;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 11px;
-  transition: all 0.15s ease;
+  font-size: 12px;
+  font-family: 'Georgia', serif;
+  transition: all 0.2s ease;
 }
 
 .retry-btn:hover {
-  background-color: #28a428;
+  background-color: #1e4d2b;
 }
 </style>
 

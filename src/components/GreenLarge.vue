@@ -1,5 +1,6 @@
 <template>
   <div class="green-large-container">
+    <h3>知识点-专业-学生-题目关系</h3>
     <div ref="chartContainer" class="chart-wrapper"></div>
     <div v-if="loading" class="loading-overlay">
       <div class="loading-spinner"></div>
@@ -691,27 +692,29 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: #ffffff;
 }
 
-.chart-header {
-  padding: 10px 15px;
-  border-bottom: 2px solid #32cd32;
-  background: linear-gradient(135deg, #f0fff4 0%, #e8f5e9 100%);
-}
-
-.chart-header h3 {
+.green-large-container h3 {
   margin: 0;
+  padding: 12px 20px;
   font-size: 16px;
   font-weight: 600;
-  color: #2c3e50;
+  color: #1e4d2b;
   text-align: center;
+  background: linear-gradient(180deg, #f5f1e8 0%, #ebe5d9 100%);
+  border-bottom: 2px solid #d4af37;
+  font-family:"楷体", serif;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
 }
 
 .chart-wrapper {
   flex: 1;
   width: 100%;
   min-height: 0;
+  background: #fefdfb;
 }
 
 .loading-overlay {
@@ -720,7 +723,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(245, 241, 232, 0.95);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -731,8 +734,8 @@ export default {
 .loading-spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid #e0e0e0;
-  border-top-color: #32cd32;
+  border: 4px solid #ebe5d9;
+  border-top-color: #2d5a3a;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -746,7 +749,9 @@ export default {
 .loading-overlay p {
   margin-top: 15px;
   font-size: 14px;
-  color: #666;
+  color: #2d5a3a;
+  font-family: 'Georgia', serif;
+  font-style: italic;
 }
 
 .error-message {
@@ -755,32 +760,34 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  padding: 20px;
-  background: #fff3cd;
-  border: 2px solid #ffc107;
-  border-radius: 8px;
+  padding: 20px 30px;
+  background: #f5f1e8;
+  border: 2px solid #d4af37;
+  border-radius: 4px;
   z-index: 10;
 }
 
 .error-message p {
   margin-bottom: 15px;
-  color: #856404;
+  color: #8b4513;
   font-size: 14px;
+  font-family: 'Georgia', serif;
 }
 
 .error-message button {
   padding: 8px 20px;
-  background: #32cd32;
-  color: white;
-  border: none;
+  background: #2d5a3a;
+  color: #f5f1e8;
+  border: 1px solid #2d5a3a;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  transition: background 0.3s;
+  font-family: 'Georgia', serif;
+  transition: all 0.3s;
 }
 
 .error-message button:hover {
-  background: #28a428;
+  background: #1e4d2b;
 }
 </style>
 

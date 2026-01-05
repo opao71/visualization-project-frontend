@@ -1,5 +1,6 @@
 <template>
   <div class="blue-box-1">
+    <h3>学习画像</h3>
     <!-- 顶部筛选区域 -->
     <div class="filter-section">
       <div class="filter-controls">
@@ -885,9 +886,9 @@ export default {
       
       // 学习模式颜色
       const patternColors = {
-        '探索尝试型': '#32cd32',  // 绿色
-        '广泛多样型': '#ffa500',  // 橙色
-        '集中针对型': '#ff6347'   // 红色
+        '探索尝试型': '#009F88',  // 绿色
+        '广泛多样型': '#F08C00',  // 橙色
+        '集中针对型': '#E9565E'   // 红色
       }
       
       if (isStudentMode) {
@@ -1209,9 +1210,9 @@ export default {
           }
         },
         legend: {
-          orient: 'vertical',
-          left: 'left',
-          top: 'middle',
+          orient: 'horizontal',
+          left: 'center',
+          bottom: '5%',
           textStyle: {
             fontSize: 12
           }
@@ -1219,8 +1220,8 @@ export default {
         series: [{
           name: '编程方法',
           type: 'pie',
-          radius: '65%', // 改为饼图（单个值）
-          center: ['60%', '50%'],
+          radius: '55%',
+          center: ['50%', '45%'],
           data: pieData,
           label: {
             show: true,
@@ -1327,9 +1328,9 @@ export default {
       const knowledgeNames = data.map(item => item.knowledge_name || item.knowledge_id || '未知知识点')
       const masteryValues = data.map(item => item.mastery_percentage || item.mastery * 100)
       const colors = data.map(item => {
-        if (item.level === 'good') return '#32cd32'
-        if (item.level === 'medium') return '#ffa500'
-        return '#ff6347'
+        if (item.level === 'good') return '#009F88'
+        if (item.level === 'medium') return '#F08C00'
+        return '#E9565E'
       })
 
       const option = {
@@ -1427,95 +1428,134 @@ export default {
   flex-direction: column;
   position: relative;
   overflow: visible;
-  background: white;
+  background: #ffffff;
+}
+
+.blue-box-1 h3 {
+  margin: 0;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e4d2b;
+  text-align: center;
+  background: linear-gradient(180deg, #f5f1e8 0%, #ebe5d9 100%);
+  border-bottom: 2px solid #d4af37;
+  font-family:"楷体", serif;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
 }
 
 .filter-section {
-  margin-bottom: 10px;
-  padding: 6px 10px 0 10px;
+  margin-bottom: 0;
+  padding: 10px 20px;
   position: relative;
   z-index: 1;
+  background: #fefdfb;
+  border-bottom: 1px solid #ebe5d9;
 }
 
 .filter-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .filter-label {
-  font-size: 12px;
-  font-weight: normal;
-  color: #111827;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e4d2b;
+  font-family: 'Georgia', serif;
+  font-style: italic;
 }
 
 .month-select {
-  padding: 4px 8px;
-  border: 1px solid #d1d5db;
+  padding: 6px 10px;
+  border: 1px solid #d4af37;
   border-radius: 4px;
-  font-size: 11px;
-  min-width: 120px;
-  background: #f9fafb;
+  font-size: 13px;
+  min-width: 140px;
+  background: #f5f1e8;
+  color: #2d5a3a;
+  font-family: 'Georgia', serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.month-select:hover {
+  background: #ebe5d9;
+  border-color: #b8941f;
+}
+
+.month-select:focus {
+  outline: none;
+  border-color: #b8941f;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
 }
 
 .filter-btn,
 .reset-btn {
-  padding: 4px 12px;
-  border: 1px solid #d1d5db;
+  padding: 6px 16px;
+  border: 1px solid #d4af37;
   border-radius: 4px;
-  font-size: 11px;
+  font-size: 13px;
   cursor: pointer;
-  transition: all 0.15s ease;
-  background-color: #f9fafb;
-  color: #4b5563;
+  transition: all 0.2s ease;
+  background-color: #f5f1e8;
+  color: #2d5a3a;
+  font-family: 'Georgia', serif;
+  font-weight: 500;
 }
 
-.filter-btn:hover {
-  background-color: #e5e7eb;
+.filter-btn:hover,
+.reset-btn:hover {
+  background-color: #ebe5d9;
+  border-color: #b8941f;
 }
 
 .filter-btn.active {
-  background-color: #111827;
-  color: #f9fafb;
-  border-color: #111827;
-}
-
-.reset-btn:hover {
-  background-color: #e5e7eb;
+  background-color: #2d5a3a;
+  color: #f5f1e8;
+  border-color: #2d5a3a;
 }
 
 .tab-section {
   display: flex;
-  gap: 4px;
-  margin-bottom: 10px;
-  padding: 6px 10px 0 10px;
+  gap: 6px;
+  margin-bottom: 0;
+  padding: 10px 20px;
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
   z-index: 1;
+  background: #fefdfb;
+  border-bottom: 1px solid #ebe5d9;
 }
 
 .tab-item {
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
-  color: #4b5563;
-  border-radius: 999px;
-  padding: 2px 8px;
-  font-size: 10px;
+  border: 1px solid #d4af37;
+  background-color: #f5f1e8;
+  color: #2d5a3a;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
   white-space: nowrap;
   flex-shrink: 0;
+  font-family: 'Georgia', serif;
+  font-weight: 500;
 }
 
 .tab-item:hover {
-  background-color: #e5e7eb;
+  background-color: #ebe5d9;
+  border-color: #b8941f;
 }
 
 .tab-item.active {
-  background-color: #111827;
-  color: #f9fafb;
-  border-color: #111827;
+  background-color: #2d5a3a;
+  color: #f5f1e8;
+  border-color: #2d5a3a;
 }
 
 .chart-container-wrapper {
@@ -1526,6 +1566,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: visible;
+  background: #fefdfb;
 }
 
 .chart-container {
@@ -1560,13 +1601,16 @@ export default {
   color: #6b7280;
   position: relative;
   z-index: 1;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 14px;
 }
 
 .loading-spinner {
   width: 30px;
   height: 30px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #111827;
+  border: 3px solid #ebe5d9;
+  border-top: 3px solid #2d5a3a;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 10px;
@@ -1578,25 +1622,27 @@ export default {
 }
 
 .error-message {
-  color: #b91c1c;
+  color: #8b4513;
   margin-bottom: 10px;
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
+  font-family: 'Georgia', serif;
 }
 
 .retry-btn {
-  padding: 4px 12px;
-  background-color: #111827;
-  color: #f9fafb;
-  border: 1px solid #111827;
+  padding: 6px 16px;
+  background-color: #2d5a3a;
+  color: #f5f1e8;
+  border: 1px solid #2d5a3a;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 11px;
-  transition: all 0.15s ease;
+  font-size: 12px;
+  font-family: 'Georgia', serif;
+  transition: all 0.2s ease;
 }
 
 .retry-btn:hover {
-  background-color: #374151;
+  background-color: #1e4d2b;
 }
 </style>
 
